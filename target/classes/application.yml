@@ -1,0 +1,18 @@
+server:
+  port: 8082
+spring:
+  datasource:
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    url:  jdbc:postgresql://localhost:5432/test?serverTimezone=UTC
+    initialization-mode: always
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  liquibase:
+
+    change-log: classpath:liquibase/db.changelog-master.xml
+    url: jdbc:postgresql://localhost:5432/test?serverTimezone=UTC
+

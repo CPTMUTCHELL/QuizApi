@@ -1,0 +1,61 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1" author="Alex" >
+        <createTable tableName="quizzes">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="date with time zone" defaultValueComputed="current_date">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ended_at" type="date with time zone" defaultValueComputed="current_date + INTERVAL '1 day'">
+
+            </column>
+
+            <column name="status" type="boolean" defaultValue="true">
+
+            </column>
+        </createTable>
+
+        <createTable tableName="questions">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="text" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+
+        </createTable>
+        <createTable tableName="quizzes_questions">
+            <column name="quiz_id" type="BIGINT">
+            </column>
+
+            <column name="question_id" type="BIGINT">
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="quizzes_questions"
+                                 baseColumnNames="quiz_id" constraintName="fk_quiz_questions_quiz"
+                                 referencedTableName="quizzes" referencedColumnNames="id"
+                                 onDelete="CASCADE" onUpdate="RESTRICT"/>
+        <addForeignKeyConstraint baseTableName="quizzes_questions"
+                                 baseColumnNames="question_id" constraintName="fk_quiz_questions_questions"
+                                 referencedTableName="questions" referencedColumnNames="id"
+                                 onUpdate="RESTRICT" onDelete="CASCADE"/>
+
+    </changeSet>
+    <changeSet author="Alex" id="2">
+        <sqlFile path="/db/populate.sql"/>
+    </changeSet>
+
+
+</databaseChangeLog>
